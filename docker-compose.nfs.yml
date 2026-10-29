@@ -1,0 +1,17 @@
+# NFS storage override for the docker-registry project.
+#
+# Usage (NFS deployment only):
+#   COMPOSE_FILE=docker-compose.yml:docker-compose.nfs.yml
+# Local deployments leave COMPOSE_FILE at just docker-compose.yml and ignore
+# this file entirely. Merging redefines only the volume driver; services,
+# networks, and proxy wiring stay in the base file.
+#
+# Required vars (see env.example): NFS_DEVICE, NFS_OPTS.
+
+volumes:
+  registry-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: ${NFS_OPTS:?NFS_OPTS is required (e.g. addr=10.0.0.5,rw,nfsvers=4)}
+      device: ${NFS_DEVICE:?NFS_DEVICE is required (e.g. :/exports/registry)}
