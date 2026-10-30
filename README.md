@@ -57,8 +57,15 @@ docker compose ps
 
 Deleting tags through the UI leaves empty repository directories behind
 (the catalog still lists them, and tag lookups log 404 `NAME_UNKNOWN`).
-Prune them with the registry's garbage collector. The registry must not be
-running while it collects, so stop it first:
+Prune them with the registry's garbage collector:
+
+```sh
+bin/garbage-collect.sh
+```
+
+The script stops the registry first (it must not be running while it
+collects), runs the collector, and restarts the registry afterwards —
+equivalent to:
 
 ```sh
 docker compose stop registry
